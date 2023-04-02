@@ -2325,7 +2325,6 @@
 
         </footer>
         <!-- footer area end -->
-
     </div>
 
 
