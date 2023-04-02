@@ -41,6 +41,8 @@ class ProductController extends Controller
             $products = $products->where('p_name', 'like', $keywords)
                         ->where('p_code', 'like', $keywords)
                         ->where('regular_price', 'like', $keywords)
+                        ->orWhere('stock_qty', 'like', $keywords)
+                        ->orWhere('date_time', 'like', $keywords)
                         ->paginate($per_page);
             return view('admin.product.index', compact('products'));
         }
@@ -301,6 +303,68 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        DB::beginTransaction();
+        try {
+            if($product->thumbnail){
+                Storage::disk('public')->delete($product->thumbnail);
+            }
+
+            if ($product->images) {
+                $images = json_decode($product->images, true);
+                foreach($images as $image){
+                   $image_path = '/products/images/'.$image;
+                   Storage::disk('public')->delete($image_path);
+                }
+            }
+            
+            $product->delete();
+            toast('Deleted successfully','success');
+            Toastr::success('Deleted successfully', '', ["positionClass" => "toast-top-center"]);
+
+            DB::commit();
+            return redirect()->back();
+
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+
+    // status active
+    public function statusActive(Product $product)
+    {
+        DB::beginTransaction();
+        try {
+            $product->status = 1;
+            $product->save();
+            toast('Slider now Active','success');
+            Toastr::success('Slider now Active', '', ["positionClass" => "toast-top-center"]);
+            DB::commit();
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    // status inActive
+    public function statusInactive(Product $product)
+    {
+        DB::beginTransaction();
+        try {
+            $product->status = 0;
+            $product->save();
+            toast('Slider now Inactive','success');
+            Toastr::success('Slider now Inactive', '', ["positionClass" => "toast-top-center"]);
+            DB::commit();
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

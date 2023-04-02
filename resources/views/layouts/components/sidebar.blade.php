@@ -57,6 +57,17 @@
                     </nav>
                 </div>
 
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                    Setting
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="setting" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                        <a class="nav-link collapsed" href="{{ route('admin.edit.setting') }}">Setting </a>
+                    </nav>
+                </div>
+
             </div>
         </div>
     </nav>

@@ -39,10 +39,22 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin', 'prefix' => 'admin', 
     Route::resource('/warehouse', WarehouseController::class);
     Route::get('/warehouse/delete/{warehouse}', 'WarehouseController@destroy')->name('warehouse.destroy');
 
-    //warehouses
+    //product route
     Route::resource('/product', ProductController::class);
     Route::get('/product/delete/{product}', 'ProductController@destroy')->name('product.destroy');
     Route::get('/get-child-category/{id}', 'ProductController@getChildcat')->name('getchildcat');
+
+    //update status
+    Route::group(['prefix' => 'product', 'as' => 'product.',], function() {
+        Route::get('/status-active/{product}', 'ProductController@statusActive')->name('status.active');
+        Route::get('/status-inactive/{product}', 'ProductController@statusInactive')->name('status.inactive');
+    });
+
+    //settings route
+    Route::group(['prefix' => 'setting'], function() {
+        Route::get('/edit', 'SettingController@edit')->name('edit.setting');
+        Route::put('/update/{setting}', 'SettingController@update')->name('update.setting');
+    });
 });
 
 

@@ -96,9 +96,9 @@
                                           <td>{{ $product->stock_qty }}</td>
                                           <td>
                                             @if($product->status ==1)
-                                                <a href=""><span class='badge bg-success'>Active</span></a>
+                                                <a title="Click to InActive" href="{{ route('admin.product.status.inactive', $product->id) }}"><span class='badge bg-success'>Active</span></a>
                                             @else
-                                                <a href=""><span class='badge bg-danger'>InActive</span></a>
+                                                <a href="{{ route('admin.product.status.active', $product->id) }}"><span class='badge bg-danger'>InActive</span></a>
                                             @endif
                                           </td>
 
